@@ -2,6 +2,14 @@
 
 class Employee {
   constructor(name, salary) {
+    if (typeof name !== 'string' || name.trim() === '') {
+      throw new Error("Name must be a non-empty string");
+    }
+
+    if (typeof salary !== 'number' || salary <= 0) {
+      throw new Error("Salary must be a positive number");
+    }
+
     this.name = name;
     this.salary = salary; 
   }
@@ -14,6 +22,15 @@ class Employee {
 class Manager extends Employee {
   constructor(name, salary, department, bonus) {
     super(name, salary); 
+
+    if (typeof department !== 'string' || department.trim() === '') {
+      throw new Error("Department must be a non-empty string");
+    }
+
+    if (typeof bonus !== 'number' || bonus < 0) {
+      throw new Error("Bonus must be a non-negative number");
+    }
+
     this.department = department;
     this.bonus = bonus; 
   }
@@ -27,8 +44,16 @@ class Manager extends Employee {
   }
 }
 
-const manager1 = new Manager("Alice", 5000, "HR", 10000);
-const manager2 = new Manager("Bob", 7000, "IT", 15000);
+try {
+  const manager1 = new Manager("", 5000, "HR", 10000);
+  manager1.displayDetails();
+} catch (error) {
+  console.error("Error creating manager1:", error.message);
+}
 
-manager1.displayDetails(); 
-manager2.displayDetails(); 
+try {
+  const manager2 = new Manager("Bob", 7000, "IT", 15000);
+  manager2.displayDetails();
+} catch (error) {
+  console.error("Error creating manager2:", error.message);
+}

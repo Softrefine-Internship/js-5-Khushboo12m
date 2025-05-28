@@ -2,6 +2,14 @@
 
 class Rectangle {
   constructor(width, height) {
+    if (typeof width !== 'number' || width <= 0) {
+      throw new Error('Width must be a positive number');
+    }
+
+    if (typeof height !== 'number' || height <= 0) {
+      throw new Error('Height must be a positive number');
+    }
+
     this.width = width;
     this.height = height;
   }
@@ -15,7 +23,11 @@ class Rectangle {
   }
 }
 
-const Rectangle1 = new Rectangle(10, 5);
+try {
+  const rectangle1 = new Rectangle(10, 5);
 
-console.log(`Area: ${Rectangle1.getArea()}`);         
-console.log(`Perimeter: ${Rectangle1.getPerimeter()}`); 
+  console.log(`Area: ${rectangle1.getArea()}`);         
+  console.log(`Perimeter: ${rectangle1.getPerimeter()}`);
+} catch (error) {
+  console.error('Error creating rectangle:', error.message);
+}

@@ -2,6 +2,16 @@
 
 class Book {
   constructor(title, author,publicationYear) {
+    if (typeof title !== 'string' || title.trim() === '') {
+      throw new Error("Title must be a non-empty string");
+    }
+    if (typeof author !== 'string' || author.trim() === '') {
+      throw new Error("Author must be a non-empty string");
+    }
+    if (typeof publicationYear !== 'number' || publicationYear <= 0) {
+      throw new Error("Publication year must be a positive number");
+    }
+
     this.title = title;
     this.author = author;
     this.publicationYear = publicationYear;
@@ -17,8 +27,13 @@ class Book {
 
 class Ebook extends Book {
   constructor(title, author,publicationYear,price) {
-    super(title, author,publicationYear); 
-      this.price = price;
+    super(title, author,publicationYear);
+
+    if (typeof price !== 'number' || price < 0) {
+      throw new Error("Price must be a non-negative number");
+    }
+
+    this.price = price;
   }
 
   displayDetails() {
@@ -27,7 +42,9 @@ class Ebook extends Book {
 }
 }
 
-
-const myEbook = new Ebook("The JavaScript Course", "John Doe", 2025, 250);
-
-myEbook.displayDetails();
+try {
+  const myEbook = new Ebook("The JavaScript Course", "John Do", 2025, 250);
+  myEbook.displayDetails();
+} catch (error) {
+  console.error("Error:", error.message);
+}

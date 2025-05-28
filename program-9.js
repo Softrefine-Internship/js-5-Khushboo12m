@@ -1,20 +1,45 @@
 // Write a JavaScript program that creates a class called Bank with properties for bank names and branches. Include methods to add a branch, remove a branch, and display all branches. Create an instance of the Bank class and perform operations to add and remove branches.
 class Bank {
-  constructor(bankName) {
+  constructor(bankName, branches = []) {
+    if (typeof bankName !== 'string' || bankName.trim() === '') {
+      throw new Error('Bank name must be a non-empty string.');
+    }
+    if (!Array.isArray(branches)) {
+      throw new Error('Branches must be an array.');
+    }
+
     this.bankName = bankName;
     this.branches = [];
+
+    branches.forEach(branch => {
+      if (typeof branch === 'string' && branch.trim() !== '') {
+        if (!this.branches.includes(branch)) {
+          this.branches.push(branch);
+        }
+      } else {
+        console.warn(`Invalid branch name ignored during initialization: '${branch}'`);
+      }
+    });
   }
 
   addBranch(branchName) {
-    if (!this.branches.includes(branchName)) {
-      this.branches.push(branchName);
-      console.log(`Branch '${branchName}' added to ${this.bankName}.`);
-    } else {
-      console.log(`Branch '${branchName}' already exists.`);
+    if (typeof branchName !== 'string' || branchName.trim() === '') {
+      console.log('Branch name must be a non-empty string.');
+      return;
     }
+    if (this.branches.includes(branchName)) {
+      console.log(`Branch '${branchName}' already exists.`);
+      return;
+    }
+    this.branches.push(branchName);
+    console.log(`Branch '${branchName}' added to ${this.bankName}.`);
   }
 
   removeBranch(branchName) {
+    if (typeof branchName !== 'string' || branchName.trim() === '') {
+      console.log('Branch name must be a non-empty string.');
+      return;
+    }
     const index = this.branches.indexOf(branchName);
     if (index !== -1) {
       this.branches.splice(index, 1);
@@ -36,14 +61,17 @@ class Bank {
   }
 }
 
-const myBank = new Bank("HDFC");
+try {
+  const myBank = new Bank("HDFC", ["HDFC Singapore", "HDFC Dubai", "HDFC India","HDFC Dubai"]);
+  myBank.displayBranches();
 
-myBank.addBranch("HDFC Singapore");
-myBank.addBranch("HDFC Dubai");
-myBank.addBranch("HDFC India");
-myBank.displayBranches();
+  myBank.addBranch("HDFC UK");
+  myBank.addBranch("HDFC Singapore"); 
 
-myBank.removeBranch("HDFC Dubai");
-myBank.displayBranches();
+  myBank.removeBranch("HDFC Dubai");
+  myBank.removeBranch("HDFC USA"); 
 
-myBank.removeBranch("HDFC Singapore"); 
+  myBank.displayBranches();
+} catch (error) {
+  console.error('Error:', error.message);
+}

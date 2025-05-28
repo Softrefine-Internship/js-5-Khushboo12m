@@ -2,6 +2,14 @@
 
 class Person {
   constructor(name,age,country) {
+    if (typeof name !== 'string' || typeof country !== 'string') {
+      throw new Error('Name and country must be strings');
+    }
+
+    if (typeof age !== 'number' || age < 0) {
+      throw new Error('Age must be a positive number');
+    }
+
     this.name = name;
     this.age = age;
     this.country = country;
@@ -12,9 +20,12 @@ class Person {
   }
 }
 
+try {
+  const person1 = new Person('Shiya', 25, 'India');
+  const person2 = new Person('Meera', 35, 'US');
 
-const person1 = new Person('Shiya', 25, 'India');
-const person2 = new Person('Meera', 35, 'US');
-
-person1.display();
-person2.display();
+  person1.display();
+  person2.display();
+} catch (error) {
+  console.error('Error creating person:', error.message);
+}

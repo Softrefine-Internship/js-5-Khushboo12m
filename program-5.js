@@ -8,7 +8,10 @@ class Shape {
 
 class Circle extends Shape {
   constructor(radius) {
-    super(); 
+    super();
+    if (typeof radius !== 'number' || radius <= 0) {
+      throw new Error('Radius must be a positive number');
+    }
     this.radius = radius;
   }
 
@@ -19,7 +22,10 @@ class Circle extends Shape {
 
 class Triangle extends Shape {
   constructor(base, height) {
-    super(); 
+    super();
+    if (typeof base !== 'number' || base <= 0 || typeof height !== 'number' || height <= 0) {
+      throw new Error('Base and height must be positive numbers');
+    }
     this.base = base;
     this.height = height;
   }
@@ -29,8 +35,15 @@ class Triangle extends Shape {
   }
 }
 
-const circle = new Circle(5);
-console.log(`Area of Circle: ${circle.getArea().toFixed(2)}`); 
+try {
+  const circle = new Circle(5);
+  console.log(`Area of Circle: ${circle.getArea().toFixed(2)}`);
 
-const triangle = new Triangle(10, 6);
-console.log(`Area of Triangle: ${triangle.getArea()}`); 
+  const triangle = new Triangle(10, 6);
+  console.log(`Area of Triangle: ${triangle.getArea()}`);
+
+  const shape = new Shape();
+  console.log(`Area of Shape: ${shape.getArea()}`);
+} catch (error) {
+  console.error("Error:", error.message);
+}
